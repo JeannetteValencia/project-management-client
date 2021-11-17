@@ -9,6 +9,7 @@ import ProjectDetails from './components/projects/ProjectDetails';
 import TaskDetails from './components/tasks/TaskDetails';
 import Signup from './components/auth/Signup';
 import Login from './components/auth/Login';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 class App extends Component {
 
@@ -57,9 +58,25 @@ class App extends Component {
         <Switch>
           <Route exact path="/" render={props => <Login {...props} getUser={this.getTheUser} />} />
           <Route exact path="/signup" component={Signup} />
-          <Route exact path="/projects" component={ProjectList} />
-          <Route exact path="/projects/:id" component={ProjectDetails} />
-          <Route exact path="/projects/:id/tasks/:taskId" component={TaskDetails} />
+          <ProtectedRoute
+            user={this.state.user}
+            exact
+            path="/projects/:id"
+            component={ProjectDetails}
+            />
+          <ProtectedRoute
+            user={this.state.user}
+            exact
+            path="/projects"
+            component={ProjectList}
+            />
+          <ProtectedRoute
+            user={this.state.user} //we need to send the user and exact so we could go exactly to that part
+            exact
+            path="/projects/:id/tasks/:taskId"
+            component={TaskDetails}
+          />
+
         </Switch>
       </div>
     );
